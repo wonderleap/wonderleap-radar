@@ -94,16 +94,5 @@ module.exports = {
     'gatsby-plugin-sitemap',
     'gatsby-plugin-twitter',
     'gatsby-transformer-sharp',
-    {
-      resolve: 'gatsby-source-graphql',
-      options: {
-        typeName: 'VRADAR',
-        fieldName: 'vradar',
-        url: 'https://annie-vr.herokuapp.com/v1/graphql',
-        headers: {
-          'x-hasura-admin-secret': 'sidequest_snapshots',
-        },
-      },
-    },
   ],
 }
