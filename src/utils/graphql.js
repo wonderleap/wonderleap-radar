@@ -8,7 +8,7 @@ const request = ({ headers, query, variables }) => {
       ...headers,
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'x-hasura-admin-secret': 'sidequest_snapshots',
+      'x-hasura-role': 'anonymous',
     },
     data: {
       query,
