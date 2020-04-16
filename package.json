@@ -30,7 +30,8 @@
     "gatsby-transformer-remark": "2.6.53",
     "gatsby-transformer-sharp": "2.3.16",
     "moment": "^2.24.0",
-    "query-string": "^6.12.1"
+    "query-string": "^6.12.1",
+    "recharts": "^1.8.5"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.28",
