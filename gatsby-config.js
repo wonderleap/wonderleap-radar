@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatstrap',
-    description: 'Gatsby starter for bootstrap a blog',
-    siteUrl: 'https://gatstrap.netlify.com',
+    title: 'VRadar',
+    description: 'VR apps daily tracking',
+    siteUrl: 'https://vradar.netlify.app',
     author: 'jaxx2104',
     twitter: 'jaxx2104',
     adsense: '',
@@ -56,7 +56,7 @@ module.exports = {
         homepage_url: 'https://gatstrap.netlify.com',
         start_url: '/',
         background_color: '#fff',
-        theme_color: '#673ab7',
+        theme_color: '#ff5722',
         display: 'standalone',
         icons: [
           {
@@ -94,5 +94,16 @@ module.exports = {
     'gatsby-plugin-sitemap',
     'gatsby-plugin-twitter',
     'gatsby-transformer-sharp',
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'VRADAR',
+        fieldName: 'vradar',
+        url: 'https://annie-vr.herokuapp.com/v1/graphql',
+        headers: {
+          'x-hasura-admin-secret': 'sidequest_snapshots',
+        },
+      },
+    },
   ],
 }

@@ -7,11 +7,7 @@ const Footer = ({ author, title }) => (
     <div className="container">
       <hr className="border-primary" />
       <p>
-        {title}
-        <Link to="/profile/">
-          <br />
-          <strong>{author}</strong> on Profile
-        </Link>
+        <small>{title}</small>
       </p>
     </div>
   </div>
