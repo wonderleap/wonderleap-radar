@@ -29,15 +29,17 @@ function Table(props) {
               </td>
               <td>
                 {format(
-                  elm.records[elm.records.length - 1].downloads ||
-                    elm.records[elm.records.length - 2].downloads,
+                  (elm.records[elm.records.length - 1] &&
+                    elm.records[elm.records.length - 1].downloads) ||
+                    (elm.records[elm.records.length - 2] &&
+                      elm.records[elm.records.length - 2].downloads),
                   2
                 )}{' '}
                 <small class="text-muted">
                   {' '}
                   +
-                  {!elm.records[elm.records.length - 1]
-                    ? elm.records[elm.records.length - 2].downloads
+                  {!elm.records[elm.records.length - 2]
+                    ? elm.records[elm.records.length - 1].downloads
                     : elm.records[elm.records.length - 1].downloads -
                       elm.records[elm.records.length - 2].downloads}{' '}
                   today
@@ -45,15 +47,17 @@ function Table(props) {
               </td>
               <td>
                 {format(
-                  elm.records[elm.records.length - 2].views ||
-                    elm.records[elm.records.length - 1].views,
+                  (elm.records[elm.records.length - 2] &&
+                    elm.records[elm.records.length - 2].views) ||
+                    (elm.records[elm.records.length - 1] &&
+                      elm.records[elm.records.length - 1].views),
                   2
                 )}{' '}
                 <small class="text-muted">
                   {' '}
                   +
-                  {!elm.records[elm.records.length - 1]
-                    ? elm.records[elm.records.length - 2].views
+                  {!elm.records[elm.records.length - 2]
+                    ? elm.records[elm.records.length - 1].views
                     : elm.records[elm.records.length - 1].views -
                       elm.records[elm.records.length - 2].views}{' '}
                   today
