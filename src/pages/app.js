@@ -12,7 +12,7 @@ const getAppInfo = `query GetData($id: uuid) {
         name
         date_added
         sq_id
-        records {
+        records (order_by: { created_at: asc }) {
           created_at
           downloads
         }
@@ -54,13 +54,13 @@ class App extends React.Component {
               {!app ? (
                 <p>App does not exist</p>
               ) : (
-                <div>
-                  <a href={`https://sdq.st/a-${app.sq_id}`}>
-                    <h1> {app.name} </h1>
-                  </a>
-                  <p> First released on {app.date_added} </p>
-                </div>
-              )}
+                  <div>
+                    <a href={`https://sdq.st/a-${app.sq_id}`}>
+                      <h1> {app.name} </h1>
+                    </a>
+                    <p> First released on {app.date_added} </p>
+                  </div>
+                )}
 
               <div className="col-xs-1" align="center">
                 <LineChart
