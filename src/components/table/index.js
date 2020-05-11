@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import format from '../../utils/numbers'
+import moment from 'moment'
 
 function Table(props) {
   const { columns, data } = props
@@ -22,6 +23,12 @@ function Table(props) {
               <td>
                 <Link to={`/app?id=${elm.id}`}>
                   <p>{elm.name}</p>
+                  <small class="text-muted">
+                    {'Updated ' +
+                      moment(
+                        elm.records[elm.records.length - 1].created_at
+                      ).fromNow() || 'No records yet'}
+                  </small>
                 </Link>
               </td>
               <td>
