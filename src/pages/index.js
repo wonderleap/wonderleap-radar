@@ -26,7 +26,7 @@ class Index extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const sq_apps = localStorage.getItem('sq_apps')
 
     let apps, created_at
