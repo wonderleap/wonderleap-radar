@@ -1,12 +1,9 @@
 import React from 'react'
 import { Link } from 'gatsby'
-
 import format from '../../utils/numbers'
 
 function Table(props) {
   const { columns, data } = props
-
-  console.log(data)
 
   return (
     <table className="table table-striped table-sm">
@@ -32,16 +29,19 @@ function Table(props) {
                   (elm.records[elm.records.length - 1] &&
                     elm.records[elm.records.length - 1].downloads) ||
                     (elm.records[elm.records.length - 2] &&
-                      elm.records[elm.records.length - 2].downloads),
+                      elm.records[elm.records.length - 2].downloads) ||
+                    0,
                   2
                 )}{' '}
                 <small class="text-muted">
                   {' '}
                   +
-                  {!elm.records[elm.records.length - 2]
-                    ? elm.records[elm.records.length - 1].downloads
-                    : elm.records[elm.records.length - 1].downloads -
-                      elm.records[elm.records.length - 2].downloads}{' '}
+                  {elm.records.length > 0
+                    ? !elm.records[elm.records.length - 2]
+                      ? elm.records[elm.records.length - 1].downloads
+                      : elm.records[elm.records.length - 1].downloads -
+                        elm.records[elm.records.length - 2].downloads
+                    : 0}{' '}
                   today
                 </small>
               </td>
@@ -50,16 +50,19 @@ function Table(props) {
                   (elm.records[elm.records.length - 2] &&
                     elm.records[elm.records.length - 2].views) ||
                     (elm.records[elm.records.length - 1] &&
-                      elm.records[elm.records.length - 1].views),
+                      elm.records[elm.records.length - 1].views) ||
+                    0,
                   2
                 )}{' '}
                 <small class="text-muted">
                   {' '}
                   +
-                  {!elm.records[elm.records.length - 2]
-                    ? elm.records[elm.records.length - 1].views
-                    : elm.records[elm.records.length - 1].views -
-                      elm.records[elm.records.length - 2].views}{' '}
+                  {elm.records.length > 0
+                    ? !elm.records[elm.records.length - 2]
+                      ? elm.records[elm.records.length - 1].views
+                      : elm.records[elm.records.length - 1].views -
+                        elm.records[elm.records.length - 2].views
+                    : 0}{' '}
                   today
                 </small>
               </td>
