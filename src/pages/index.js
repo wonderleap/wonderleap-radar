@@ -80,7 +80,9 @@ class Index extends Component {
             data={data || []}
           />
         ) : (
-          <p>Loading...</p>
+          <div>
+            <p>Loading...</p>
+          </div>
         )}
       </Layout>
     )

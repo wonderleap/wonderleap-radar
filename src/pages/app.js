@@ -20,6 +20,8 @@ const getAppInfo = `query GetData($id: uuid) {
           created_at
           downloads
           views
+          score
+          clicks
         }
     }
 }`
@@ -30,6 +32,8 @@ class App extends React.Component {
 
     this.state = {
       app: {},
+      dailyViews: [],
+      dailyDownloads: [],
     }
   }
 
@@ -37,19 +41,67 @@ class App extends React.Component {
     request({
       query: getAppInfo,
       variables: { id: this.props.search.id },
-    }).then(_data =>
-      this.setState({
-        app:
-          _data &&
-          _data.data &&
-          _data.data.sidequest_apps &&
-          _data.data.sidequest_apps[0],
+    })
+      .then(_data =>
+        this.setState({
+          app:
+            _data &&
+            _data.data &&
+            _data.data.sidequest_apps &&
+            _data.data.sidequest_apps[0],
+        })
+      )
+      .then(() => {
+        this._getDailyViews(this.state.app.records)
+        this._getDailyDownloads(this.state.app.records)
       })
-    )
+  }
+
+  _getDailyViews(dataset) {
+    let updatedDataset = []
+
+    for (let index = 0; index < dataset.length; index++) {
+      updatedDataset.push({
+        views:
+          index === 0
+            ? 0
+            : Math.max(0, dataset[index].views - dataset[index - 1].views),
+        created_at: dataset[index].created_at,
+      })
+    }
+
+    console.log(updatedDataset)
+
+    this.setState({
+      dailyViews: updatedDataset,
+    })
+  }
+
+  _getDailyDownloads(dataset) {
+    let updatedDataset = []
+
+    for (let index = 0; index < dataset.length; index++) {
+      updatedDataset.push({
+        downloads:
+          index === 0
+            ? 0
+            : Math.max(
+                0,
+                dataset[index].downloads - dataset[index - 1].downloads
+              ),
+        created_at: dataset[index].created_at,
+      })
+    }
+
+    console.log(updatedDataset)
+
+    this.setState({
+      dailyDownloads: updatedDataset,
+    })
   }
 
   render() {
-    const { app } = this.state
+    const { app, dailyDownloads, dailyViews } = this.state
     return (
       <Layout>
         <div>
@@ -70,45 +122,89 @@ class App extends React.Component {
               )}
               <div class="row">
                 <div className="col-sm" align="center">
-                  <h2>Downloads</h2>
+                  <h3>Cumulative Downloads</h3>
                   <LineChart
-                    width={250}
-                    height={250}
+                    width={300}
+                    height={300}
                     data={(app && app.records) || []}
                     margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                   >
-                    <XAxis dataKey="created_at" />
-                    <YAxis dataKey="downloads" />
+                    <XAxis
+                      dataKey="created_at"
+                      tickFormatter={item => moment(item).format('MMM Do YY')}
+                    />
+                    <YAxis />
                     <Tooltip />
                     <CartesianGrid stroke="#f5f5f5" />
+
                     <Line
                       type="monotone"
                       dataKey="downloads"
-                      stroke="#ff7300"
-                      yAxisId={0}
+                      stroke="#82ca9d"
                     />
-                    {/*<Line type="monotone" dataKey="pv" stroke="#387908" yAxisId={1} />*/}
                   </LineChart>
                 </div>
                 <div className="col-sm" align="center">
-                  <h2>Views</h2>
+                  <h3>Daily Downloads</h3>
                   <LineChart
-                    width={250}
-                    height={250}
+                    width={300}
+                    height={300}
+                    data={dailyDownloads || []}
+                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                  >
+                    <XAxis
+                      dataKey="created_at"
+                      tickFormatter={item => moment(item).format('MMM Do YY')}
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <CartesianGrid stroke="#f5f5f5" />
+
+                    <Line
+                      type="monotone"
+                      dataKey="downloads"
+                      stroke="#82ca9d"
+                    />
+                  </LineChart>
+                </div>
+              </div>
+              <div class="row">
+                <div className="col-sm" align="center">
+                  <h3>Cumulative Views</h3>
+                  <LineChart
+                    width={300}
+                    height={300}
                     data={(app && app.records) || []}
                     margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                   >
-                    <XAxis dataKey="created_at" />
-                    <YAxis dataKey="views" />
+                    <XAxis
+                      dataKey="created_at"
+                      tickFormatter={item => moment(item).format('MMM Do YY')}
+                    />
+                    <YAxis />
                     <Tooltip />
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line
-                      type="monotone"
-                      dataKey="views"
-                      stroke="#ff7300"
-                      yAxisId={0}
+
+                    <Line type="monotone" dataKey="views" stroke="#82ca9d" />
+                  </LineChart>
+                </div>
+                <div className="col-sm" align="center">
+                  <h3>Daily Downloads</h3>
+                  <LineChart
+                    width={300}
+                    height={300}
+                    data={dailyViews || []}
+                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                  >
+                    <XAxis
+                      dataKey="created_at"
+                      tickFormatter={item => moment(item).format('MMM Do YY')}
                     />
-                    {/*<Line type="monotone" dataKey="pv" stroke="#387908" yAxisId={1} />*/}
+                    <YAxis />
+                    <Tooltip />
+                    <CartesianGrid stroke="#f5f5f5" />
+
+                    <Line type="monotone" dataKey="views" stroke="#82ca9d" />
                   </LineChart>
                 </div>
               </div>

@@ -17,64 +17,66 @@ function Table(props) {
       </thead>
       <tbody>
         {data &&
-          data.map((elm, index) => (
-            <tr key={elm.sq_id}>
-              <td>{index + 1}</td>
-              <td>
-                <Link to={`/app?id=${elm.id}`}>
-                  <p>{elm.name}</p>
-                  <small class="text-muted">
-                    {'Updated ' +
-                      moment(
-                        elm.records[elm.records.length - 1].created_at
-                      ).fromNow() || 'No records yet'}
-                  </small>
-                </Link>
-              </td>
-              <td>
-                {format(
-                  (elm.records[elm.records.length - 1] &&
-                    elm.records[elm.records.length - 1].downloads) ||
-                    (elm.records[elm.records.length - 2] &&
-                      elm.records[elm.records.length - 2].downloads) ||
-                    0,
-                  2
-                )}{' '}
-                <small class="text-muted">
-                  {' '}
-                  +
-                  {elm.records.length > 0
-                    ? !elm.records[elm.records.length - 2]
-                      ? elm.records[elm.records.length - 1].downloads
-                      : elm.records[elm.records.length - 1].downloads -
-                        elm.records[elm.records.length - 2].downloads
-                    : 0}{' '}
-                  today
-                </small>
-              </td>
-              <td>
-                {format(
-                  (elm.records[elm.records.length - 2] &&
-                    elm.records[elm.records.length - 2].views) ||
+          data.map((elm, index) => {
+            return (
+              <tr key={elm.sq_id}>
+                <td>{index + 1}</td>
+                <td>
+                  <Link to={`/app?id=${elm.id}`}>
+                    <p>{elm.name}</p>
+                    <small class="text-muted">
+                      {'Updated ' +
+                        moment(
+                          elm.records[elm.records.length - 1].created_at
+                        ).fromNow() || 'No records yet'}
+                    </small>
+                  </Link>
+                </td>
+                <td>
+                  {format(
                     (elm.records[elm.records.length - 1] &&
-                      elm.records[elm.records.length - 1].views) ||
-                    0,
-                  2
-                )}{' '}
-                <small class="text-muted">
-                  {' '}
-                  +
-                  {elm.records.length > 0
-                    ? !elm.records[elm.records.length - 2]
-                      ? elm.records[elm.records.length - 1].views
-                      : elm.records[elm.records.length - 1].views -
-                        elm.records[elm.records.length - 2].views
-                    : 0}{' '}
-                  today
-                </small>
-              </td>
-            </tr>
-          ))}
+                      elm.records[elm.records.length - 1].downloads) ||
+                      (elm.records[elm.records.length - 2] &&
+                        elm.records[elm.records.length - 2].downloads) ||
+                      0,
+                    2
+                  )}{' '}
+                  <small class="text-muted">
+                    {' '}
+                    +
+                    {elm.records.length > 0
+                      ? !elm.records[elm.records.length - 2]
+                        ? elm.records[elm.records.length - 1].downloads
+                        : elm.records[elm.records.length - 1].downloads -
+                          elm.records[elm.records.length - 2].downloads
+                      : 0}{' '}
+                    today
+                  </small>
+                </td>
+                <td>
+                  {format(
+                    (elm.records[elm.records.length - 2] &&
+                      elm.records[elm.records.length - 2].views) ||
+                      (elm.records[elm.records.length - 1] &&
+                        elm.records[elm.records.length - 1].views) ||
+                      0,
+                    2
+                  )}{' '}
+                  <small class="text-muted">
+                    {' '}
+                    +
+                    {elm.records.length > 0
+                      ? !elm.records[elm.records.length - 2]
+                        ? elm.records[elm.records.length - 1].views
+                        : elm.records[elm.records.length - 1].views -
+                          elm.records[elm.records.length - 2].views
+                      : 0}{' '}
+                    today
+                  </small>
+                </td>
+              </tr>
+            )
+          })}
       </tbody>
     </table>
   )
