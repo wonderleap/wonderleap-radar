@@ -18,6 +18,11 @@ function Table(props) {
       <tbody>
         {data &&
           data.map((elm, index) => {
+            if (elm.records.length === 0) {
+              console.log(elm.sq_id, 'has no records')
+              return
+            }
+
             return (
               <tr key={elm.sq_id}>
                 <td>{index + 1}</td>
