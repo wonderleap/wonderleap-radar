@@ -1,4 +1,5 @@
 import React from 'react'
+import { Table as TableBS } from 'react-bootstrap'
 import { Link } from 'gatsby'
 import format from '../../utils/numbers'
 import moment from 'moment'
@@ -7,7 +8,7 @@ function Table(props) {
   const { columns, data } = props
 
   return (
-    <table className="table table-striped table-sm">
+    <TableBS striped bordered>
       <thead>
         <tr>
           {columns.map(col => (
@@ -83,7 +84,7 @@ function Table(props) {
             )
           })}
       </tbody>
-    </table>
+    </TableBS>
   )
 }
 

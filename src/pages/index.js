@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import request from '../utils/graphql'
 
+import {
+  Row,
+  Col,
+  ButtonToolbar,
+  ButtonGroup,
+  Button,
+  Spinner,
+} from 'react-bootstrap'
 import Layout from 'components/layout'
 import Table from 'components/table'
 
@@ -75,13 +83,38 @@ class Index extends Component {
     return (
       <Layout location={'index'}>
         {!loading ? (
-          <Table
-            columns={['#', 'Name', 'Downloads', 'Views']}
-            data={data || []}
-          />
+          <>
+            <Row>
+              <Col>
+                <Table
+                  columns={['#', 'Name', 'Downloads', 'Views']}
+                  data={data.slice(0, 10) || []}
+                />
+              </Col>
+            </Row>
+            {/*<Row>
+              <Col>
+                <ButtonToolbar aria-label="Toolbar with button groups">
+                  <ButtonGroup className="mr-2" aria-label="First group">
+                    <Button>1</Button> <Button>2</Button> <Button>3</Button>{' '}
+                    <Button>4</Button>
+                  </ButtonGroup>
+                </ButtonToolbar>
+              </Col>
+            </Row>*/}
+          </>
         ) : (
-          <div>
-            <p>Loading...</p>
+          <div
+            className="text-center"
+            style={{
+              marginTop: 100,
+            }}
+          >
+            <Row className="my-auto">
+              <Col>
+                <Spinner animation="grow" />
+              </Col>
+            </Row>
           </div>
         )}
       </Layout>
