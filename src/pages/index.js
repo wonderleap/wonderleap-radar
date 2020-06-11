@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import request from '../utils/graphql'
+import format from '../utils/numbers'
 
 import {
   Row,
@@ -9,6 +10,11 @@ import {
   ButtonGroup,
   Button,
   Spinner,
+  Container,
+  Card,
+  CardDeck,
+  Pagination,
+  Badge,
 } from 'react-bootstrap'
 import Layout from 'components/layout'
 import Table from 'components/table'
@@ -18,6 +24,8 @@ const getData = `query getData($date1: timestamptz, $date2: timestamptz) {
     name
     sq_id
     id
+    image_url
+    is_webxr
     records(where: {created_at: {_gte: $date1, _lt: $date2}}, order_by: {created_at: asc}) {
       downloads
       views
@@ -26,11 +34,59 @@ const getData = `query getData($date1: timestamptz, $date2: timestamptz) {
   }
 }
   `
+
+const getCreatedToday = `query getCreatedToday($date : timestamptz) {
+  sidequest_apps(where: {created_at: {_gte: $date}}) {
+    name
+  }
+}
+`
 class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
+      addedToday: 0,
+      totalDownloads: 0,
+      totalViews: 0,
+      dailyDownloads: [],
+      dailyViews: [],
+      currentPage: 1,
+      data: [],
+      recordsPerPage: 50,
+    }
+  }
+
+  getTotals = apps => {
+    let totalViews = 0
+    let totalDownloads = 0
+
+    for (const elm of apps) {
+      if (elm.records.length > 0) {
+        totalDownloads += elm.records[elm.records.length - 1].downloads
+          ? elm.records[elm.records.length - 1].downloads
+          : 0
+        totalViews += elm.records[elm.records.length - 1].views
+          ? elm.records[elm.records.length - 1].views
+          : 0
+      }
+    }
+
+    return {
+      totalViews: totalViews,
+      totalDownloads: totalDownloads,
+    }
+  }
+
+  gotoPage = toPage => {
+    let { currentPage, data, recordsPerPage } = this.state
+
+    if (
+      currentPage >= 1 &&
+      currentPage <= Math.ceil(data.length / recordsPerPage)
+    ) {
+      this.setState({ currentPage: toPage })
+      window.scroll(0, 0)
     }
   }
 
@@ -45,9 +101,16 @@ class Index extends Component {
       created_at = data.created_at
     }
 
+    request({
+      query: getCreatedToday,
+      variables: { date: moment().format('YYYY-MM-DD') },
+    }).then(data =>
+      this.setState({ addedToday: data.data.sidequest_apps.length })
+    )
+
     if (
       sq_apps &&
-      !moment(created_at).isBefore(moment().subtract(1, 'hours'))
+      !moment(created_at).isBefore(moment().subtract(10, 'minutes'))
     ) {
       this.setState({ loading: false, data: apps })
     } else {
@@ -77,44 +140,133 @@ class Index extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { data, totalDownloads, totalViews } = this.state
+
+    if (data && data.length > 0 && totalDownloads === 0 && totalViews === 0) {
+      const totalStats = this.getTotals(data)
+
+      const totalDownloads = totalStats.totalDownloads
+      const totalViews = totalStats.totalViews
+
+      this.setState({
+        totalDownloads,
+        totalViews,
+      })
+    }
+  }
+
   render() {
-    const { data, loading } = this.state
+    const {
+      data,
+      loading,
+      addedToday,
+      totalDownloads,
+      totalViews,
+      currentPage,
+      recordsPerPage,
+    } = this.state
 
     return (
-      <Layout location={'index'}>
+      <Layout hideFooter={loading ? true : false} location={'index'}>
         {!loading ? (
           <>
-            <Row>
-              <Col>
-                <Table
-                  columns={['#', 'Name', 'Downloads', 'Views']}
-                  data={data.slice(0, 10) || []}
-                />
-              </Col>
-            </Row>
-            {/*<Row>
-              <Col>
-                <ButtonToolbar aria-label="Toolbar with button groups">
-                  <ButtonGroup className="mr-2" aria-label="First group">
-                    <Button>1</Button> <Button>2</Button> <Button>3</Button>{' '}
-                    <Button>4</Button>
-                  </ButtonGroup>
-                </ButtonToolbar>
-              </Col>
-            </Row>*/}
+            <Container fluid style={{ marginBottom: 30 }}>
+              <CardDeck>
+                <Card border="dark" style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title>Tracking apps</Card.Title>
+                    <Card.Text>
+                      Tracking {data.length} apps from SideQuest.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+                <Card border="dark" style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title>Total stats</Card.Title>
+                    <Card.Text>
+                      {format(totalDownloads)} total cumulative downloads and{' '}
+                      {format(totalViews)} total cumulative views.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+                <Card border="dark" style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title>New apps</Card.Title>
+                    <Card.Text>
+                      {addedToday || 0} new {addedToday > 1 ? 'apps' : 'app'}{' '}
+                      added today.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+                <Card border="dark" style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title>
+                      <Badge pill variant="dark">
+                        Ad
+                      </Badge>{' '}
+                      <a href="https://wonderleap.co">Wonderleap</a>
+                    </Card.Title>
+                    <Card.Text>
+                      Learn how to monetize your game{' '}
+                      <a href="https://wonderleap.co">here</a>.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </CardDeck>
+            </Container>
+
+            <Container fluid style={{ marginTop: 30 }}>
+              <Row>
+                <Col>
+                  <h3>Ranking by {'Total Downloads'}</h3>
+                </Col>
+              </Row>
+            </Container>
+
+            <Table
+              columns={['Rank', '', 'Downloads', ' Views', 'Native']}
+              data={
+                data.slice(
+                  recordsPerPage * (currentPage - 1),
+                  recordsPerPage * currentPage
+                ) || []
+              }
+              title={'Table name'}
+              startingIndex={recordsPerPage * (currentPage - 1)}
+            />
+
+            <Container fluid>
+              <Row>
+                <Col>
+                  <Pagination className="justify-content-end">
+                    <Pagination.Prev
+                      disabled={currentPage === 1 ? true : false}
+                      onClick={() => this.gotoPage(currentPage - 1)}
+                    >
+                      Previous {recordsPerPage}
+                    </Pagination.Prev>
+                    <Pagination.Item disabled>
+                      {currentPage} / {Math.ceil(data.length / recordsPerPage)}
+                    </Pagination.Item>
+                    <Pagination.Next
+                      disabled={
+                        currentPage === Math.ceil(data.length / recordsPerPage)
+                          ? true
+                          : false
+                      }
+                      onClick={() => this.gotoPage(currentPage + 1)}
+                    >
+                      Next {recordsPerPage}
+                    </Pagination.Next>
+                  </Pagination>
+                </Col>
+              </Row>
+            </Container>
           </>
         ) : (
-          <div
-            className="text-center"
-            style={{
-              marginTop: 100,
-            }}
-          >
-            <Row className="my-auto">
-              <Col>
-                <Spinner animation="grow" />
-              </Col>
-            </Row>
+          <div className="text-center">
+            <Spinner animation="grow" />
           </div>
         )}
       </Layout>
