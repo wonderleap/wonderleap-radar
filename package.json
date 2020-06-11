@@ -5,6 +5,7 @@
   "author": "Futoshi Iwashita <jaxx2104@gmail.com>",
   "dependencies": {
     "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
     "gatsby": "2.19.23",
     "gatsby-image": "2.2.41",
     "gatsby-link": "2.2.29",
@@ -31,6 +32,7 @@
     "gatsby-transformer-sharp": "2.3.16",
     "moment": "^2.24.0",
     "query-string": "^6.12.1",
+    "react-bootstrap": "^1.0.1",
     "recharts": "^1.8.5"
   },
   "devDependencies": {
@@ -40,7 +42,6 @@
     "@fortawesome/react-fontawesome": "0.1.9",
     "animate.css": "3.7.2",
     "babel-eslint": "10.1.0",
-    "bootstrap": "4.4.1",
     "emergence.js": "1.1.2",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.1",

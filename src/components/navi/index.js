@@ -1,42 +1,21 @@
 import React from 'react'
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap'
 import { Link } from 'gatsby'
 
 class Navi extends React.Component {
   render() {
-    const { location, title } = this.props
     return (
-      <nav className="navbar navbar-expand navbar-dark flex-column flex-md-row bg-primary">
-        <Link className="text-center" to="/">
-          <h1 className="navbar-brand mb-0">{title}</h1>
-        </Link>
-        <div className="container">
-          {/*<div className="navbar-nav-scroll">
-            <ul className="navbar-nav bd-navbar-nav flex-row">
-              <li
-                className={
-                  location.pathname === '/' ? 'nav-item active' : 'nav-item'
-                }
-              >
-                <Link to="/" className="nav-link">
-                  Blog
-                </Link>
-              </li>
-              <li
-                className={
-                  location.pathname === '/profile/'
-                    ? 'nav-item active'
-                    : 'nav-item'
-                }
-              >
-                <Link to="/profile/" className="nav-link">
-                  Profile
-                </Link>
-              </li>
-            </ul>
-              </div>*/}
-          <div className="navbar-nav flex-row ml-md-auto d-none d-md-flex" />
-        </div>
-      </nav>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/">Radar</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
+            <Nav.Link href="https://wonderleap.substack.com/subscribe/">
+              💡 Join our Substack
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     )
   }
 }
