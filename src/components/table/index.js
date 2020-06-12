@@ -6,6 +6,7 @@ import {
   Container,
   Nav,
   Image,
+  Badge,
 } from 'react-bootstrap'
 import { Link } from 'gatsby'
 import format from '../../utils/numbers'
@@ -14,10 +15,11 @@ import moment from 'moment'
 function Table(props) {
   const { columns, data, title, startingIndex } = props
 
-  console.log(data)
+  const showImages = data.length <= 50
+
   return (
     <Container fluid>
-      <TableBS striped bordered>
+      <TableBS striped bordered responsive>
         <thead>
           <tr>
             {columns.map(col => (
@@ -33,9 +35,13 @@ function Table(props) {
                 return
               }
 
+              const isNew =
+                moment().format('YYYY-MM-DD') ===
+                moment(elm.created_at).format('YYYY-MM-DD')
+
               return (
                 <tr key={elm.sq_id}>
-                  <td className=" text-center" style={{ width: 10 }}>
+                  <td className="text-center" style={{ width: 10 }}>
                     <small style={{ fontSize: 15, fontWeight: 700 }}>
                       {startingIndex + index + 1}
                     </small>
@@ -46,12 +52,33 @@ function Table(props) {
                         ).fromNow() || 'No records yet'}
                         </small>*/}
                   </td>
+                  <td
+                    className="text-center"
+                    style={{ minWidth: 50, maxWidth: 55 }}
+                  >
+                    {showImages && (
+                      <Image size="sm" rounded src={elm.image_url} />
+                    )}
+                  </td>
                   <td>
-                    <Link to={`/app?id=${elm.id}`}>
-                      <p style={{ fontWeight: 700 }}>{elm.name}</p>
-                    </Link>
-
-                    {/* <Image rounded src={elm.image_url} /> */}
+                    <p style={{ fontWeight: 700 }}>
+                      {isNew && (
+                        <Badge pill variant="dark">
+                          New
+                        </Badge>
+                      )}{' '}
+                      {elm.name}
+                    </p>
+                    {/*<Link to={`/app?id=${elm.id}`}>
+                      <p style={{ fontWeight: 700 }}>
+                        {isNew && (
+                          <Badge pill variant="dark">
+                            New
+                          </Badge>
+                        )}{' '}
+                        {elm.name}
+                      </p>
+                    </Link>*/}
                   </td>
                   <td>
                     {format(
@@ -95,8 +122,16 @@ function Table(props) {
                       today
                     </small>
                   </td>
-                  <td className=" text-center" style={{ width: 10 }}>
-                    {elm.is_webxr ? 'No' : 'Yes'}
+                  <td>
+                    {(
+                      (elm.records[elm.records.length - 1].downloads /
+                        elm.records[elm.records.length - 1].views) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </td>
+                  <td style={{ width: 10 }}>
+                    {elm.is_webxr ? 'WebXR' : 'Native'}
                   </td>
                 </tr>
               )

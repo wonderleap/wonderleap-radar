@@ -26,6 +26,7 @@ const getData = `query getData($date1: timestamptz, $date2: timestamptz) {
     id
     image_url
     is_webxr
+    created_at
     records(where: {created_at: {_gte: $date1, _lt: $date2}}, order_by: {created_at: asc}) {
       downloads
       views
@@ -53,7 +54,7 @@ class Index extends Component {
       dailyViews: [],
       currentPage: 1,
       data: [],
-      recordsPerPage: 50,
+      recordsPerPage: 25,
     }
   }
 
@@ -167,6 +168,9 @@ class Index extends Component {
       recordsPerPage,
     } = this.state
 
+    console.log(recordsPerPage * (currentPage - 1))
+    console.log(recordsPerPage * currentPage)
+
     return (
       <Layout hideFooter={loading ? true : false} location={'index'}>
         {!loading ? (
@@ -203,13 +207,13 @@ class Index extends Component {
                   <Card.Body>
                     <Card.Title>
                       <Badge pill variant="dark">
-                        Ad
+                        💡 Tip
                       </Badge>{' '}
-                      <a href="https://wonderleap.co">Wonderleap</a>
+                      <a href="https://wonderleap.co">Monetize your game</a>
                     </Card.Title>
                     <Card.Text>
-                      Learn how to monetize your game{' '}
-                      <a href="https://wonderleap.co">here</a>.
+                      Learn how to monetize your game with{' '}
+                      <a href="https://wonderleap.co">Wonderleap</a>.
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -218,14 +222,22 @@ class Index extends Component {
 
             <Container fluid style={{ marginTop: 30 }}>
               <Row>
+                <Col sm="auto">
+                  <h3>{'Total Downloads'}</h3>
+                </Col>
+              </Row>
+              <Row>
                 <Col>
-                  <h3>Ranking by {'Total Downloads'}</h3>
+                  <p>
+                    This table shows all SideQuest titles ranked by their{' '}
+                    {'Total Downloads'.toLowerCase()}.
+                  </p>
                 </Col>
               </Row>
             </Container>
 
             <Table
-              columns={['Rank', '', 'Downloads', ' Views', 'Native']}
+              columns={['Rank', '', '', 'Downloads', ' Views', 'Ratio', 'Type']}
               data={
                 data.slice(
                   recordsPerPage * (currentPage - 1),
@@ -239,7 +251,34 @@ class Index extends Component {
             <Container fluid>
               <Row>
                 <Col>
-                  <Pagination className="justify-content-end">
+                  <ButtonGroup size="sm">
+                    <Button
+                      disabled={recordsPerPage === 25}
+                      onClick={() => this.setState({ recordsPerPage: 25 })}
+                    >
+                      25 results
+                    </Button>
+                    <Button
+                      disabled={recordsPerPage === 50}
+                      onClick={() => this.setState({ recordsPerPage: 50 })}
+                    >
+                      50 results
+                    </Button>
+                    <Button
+                      disabled={recordsPerPage === data.length}
+                      onClick={() =>
+                        this.setState({
+                          currentPage: 1,
+                          recordsPerPage: data.length,
+                        })
+                      }
+                    >
+                      All results
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+                <Col>
+                  <Pagination className="justify-content-end" size="sm">
                     <Pagination.Prev
                       disabled={currentPage === 1 ? true : false}
                       onClick={() => this.gotoPage(currentPage - 1)}
