@@ -11,7 +11,7 @@ class Navi extends React.Component {
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav>
             <Nav.Link href="https://wonderleap.substack.com/subscribe/">
-              ✉️ Subscribe to our newsletter
+              ✉️ Notify me of new apps
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
