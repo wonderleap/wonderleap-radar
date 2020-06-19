@@ -54,7 +54,7 @@ class Index extends Component {
       dailyViews: [],
       currentPage: 1,
       data: [],
-      recordsPerPage: 25,
+      recordsPerPage: 50,
     }
   }
 
@@ -168,9 +168,6 @@ class Index extends Component {
       recordsPerPage,
     } = this.state
 
-    console.log(recordsPerPage * (currentPage - 1))
-    console.log(recordsPerPage * currentPage)
-
     return (
       <Layout hideFooter={loading ? true : false} location={'index'}>
         {!loading ? (
@@ -178,52 +175,60 @@ class Index extends Component {
             <Container fluid style={{ marginBottom: 30 }}>
               <CardDeck>
                 <Card border="dark" style={{ width: '18rem' }}>
-                  <Card.Body>
-                    <Card.Title>Tracking apps</Card.Title>
+                  <Card.Body className="text-center">
+                    <Card.Title>Number of apps tracked</Card.Title>
                     <Card.Text>
-                      Tracking {data.length} apps from SideQuest.
+                      <h2>{data.length}</h2>
                     </Card.Text>
                   </Card.Body>
                 </Card>
                 <Card border="dark" style={{ width: '18rem' }}>
-                  <Card.Body>
-                    <Card.Title>Total stats</Card.Title>
+                  <Card.Body className="text-center">
+                    <Card.Title>Total app downloads</Card.Title>
                     <Card.Text>
-                      {format(totalDownloads)} total cumulative downloads and{' '}
-                      {format(totalViews)} total cumulative views.
+                      <h2>{format(totalDownloads)}</h2>
                     </Card.Text>
                   </Card.Body>
                 </Card>
                 <Card border="dark" style={{ width: '18rem' }}>
-                  <Card.Body>
-                    <Card.Title>New apps</Card.Title>
+                  <Card.Body className="text-center">
+                    <Card.Title>Total app views</Card.Title>
                     <Card.Text>
-                      {addedToday || 0} new {addedToday > 1 ? 'apps' : 'app'}{' '}
-                      added today.
+                      <h2>{format(totalViews)}</h2>
                     </Card.Text>
                   </Card.Body>
                 </Card>
                 <Card border="dark" style={{ width: '18rem' }}>
-                  <Card.Body>
-                    <Card.Title>
-                      <Badge pill variant="dark">
-                        💡 Tip
-                      </Badge>{' '}
-                      <a href="https://wonderleap.co">Monetize your game</a>
-                    </Card.Title>
+                  <Card.Body className="text-center">
+                    <Card.Title>New apps added today</Card.Title>
                     <Card.Text>
-                      Learn how to monetize your game with{' '}
-                      <a href="https://wonderleap.co">Wonderleap</a>.
+                      <h2>{addedToday || 0}</h2>
                     </Card.Text>
                   </Card.Body>
                 </Card>
+                {/*
+                  <Card border="dark" style={{ width: '18rem' }}>
+                    <Card.Body className="text-center">
+                      <Card.Title>
+                        <Badge pill variant="dark">
+                          💡 Tip
+                        </Badge>{' '}
+                        <a href="https://wonderleap.co">Monetize your game</a>
+                      </Card.Title>
+                      <Card.Text>
+                        Learn how to monetize your game with{' '}
+                        <a href="https://wonderleap.co">Wonderleap</a>.
+                      </Card.Text>
+                    </Card.Body>
+                  </Card> 
+                */}
               </CardDeck>
             </Container>
 
             <Container fluid style={{ marginTop: 30 }}>
               <Row>
                 <Col sm="auto">
-                  <h3>{'Total Downloads'}</h3>
+                  <h3>{'SideQuest App Ranking'}</h3>
                 </Col>
               </Row>
               <Row>
@@ -237,7 +242,7 @@ class Index extends Component {
             </Container>
 
             <Table
-              columns={['Rank', '', '', 'Downloads', ' Views', 'Ratio', 'Type']}
+              columns={['Rank', '', '', 'Downloads', ' Views']}
               data={
                 data.slice(
                   recordsPerPage * (currentPage - 1),
@@ -248,23 +253,22 @@ class Index extends Component {
               startingIndex={recordsPerPage * (currentPage - 1)}
             />
 
-            <Container fluid>
+            <Container
+              fluid
+              className="text-center"
+              style={{ marginBottom: 20 }}
+            >
               <Row>
                 <Col>
                   <ButtonGroup size="sm">
                     <Button
-                      disabled={recordsPerPage === 25}
-                      onClick={() => this.setState({ recordsPerPage: 25 })}
+                      onClick={() =>
+                        this.setState({ recordsPerPage: recordsPerPage + 50 })
+                      }
                     >
-                      25 results
+                      Load more
                     </Button>
-                    <Button
-                      disabled={recordsPerPage === 50}
-                      onClick={() => this.setState({ recordsPerPage: 50 })}
-                    >
-                      50 results
-                    </Button>
-                    <Button
+                    {/*<Button
                       disabled={recordsPerPage === data.length}
                       onClick={() =>
                         this.setState({
@@ -274,10 +278,10 @@ class Index extends Component {
                       }
                     >
                       All results
-                    </Button>
+                    </Button>*/}
                   </ButtonGroup>
                 </Col>
-                <Col>
+                {/*<Col>
                   <Pagination className="justify-content-end" size="sm">
                     <Pagination.Prev
                       disabled={currentPage === 1 ? true : false}
@@ -299,7 +303,7 @@ class Index extends Component {
                       Next {recordsPerPage}
                     </Pagination.Next>
                   </Pagination>
-                </Col>
+                    </Col>*/}
               </Row>
             </Container>
           </>

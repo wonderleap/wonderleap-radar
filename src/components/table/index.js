@@ -15,8 +15,6 @@ import moment from 'moment'
 function Table(props) {
   const { columns, data, title, startingIndex } = props
 
-  const showImages = data.length <= 50
-
   return (
     <Container fluid>
       <TableBS striped bordered responsive>
@@ -56,20 +54,12 @@ function Table(props) {
                     className="text-center"
                     style={{ minWidth: 50, maxWidth: 55 }}
                   >
-                    {showImages && (
-                      <Image size="sm" rounded src={elm.image_url} />
-                    )}
+                    <Image size="sm" rounded src={elm.image_url} />
                   </td>
                   <td>
-                    <p style={{ fontWeight: 700 }}>
-                      {isNew && (
-                        <Badge pill variant="dark">
-                          New
-                        </Badge>
-                      )}{' '}
-                      {elm.name}
-                    </p>
-                    {/*<Link to={`/app?id=${elm.id}`}>
+                    <a
+                      href={`https://sidequestvr.com/app/${elm.sq_id}`} /*to={`/app?id=${elm.id}`}*/
+                    >
                       <p style={{ fontWeight: 700 }}>
                         {isNew && (
                           <Badge pill variant="dark">
@@ -78,7 +68,7 @@ function Table(props) {
                         )}{' '}
                         {elm.name}
                       </p>
-                    </Link>*/}
+                    </a>
                   </td>
                   <td>
                     {format(
@@ -122,17 +112,19 @@ function Table(props) {
                       today
                     </small>
                   </td>
-                  <td>
-                    {(
-                      (elm.records[elm.records.length - 1].downloads /
-                        elm.records[elm.records.length - 1].views) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </td>
-                  <td style={{ width: 10 }}>
-                    {elm.is_webxr ? 'WebXR' : 'Native'}
-                  </td>
+                  {/*  
+                    <td>
+                      {(
+                        (elm.records[elm.records.length - 1].downloads /
+                          elm.records[elm.records.length - 1].views) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </td>
+                    <td style={{ width: 10 }}>
+                      {elm.is_webxr ? 'WebXR' : 'Native'}
+                    </td>
+                  */}
                 </tr>
               )
             })}

@@ -1,10 +1,10 @@
 module.exports = {
   siteMetadata: {
-    title: 'VRadar',
+    title: 'Radar',
     description: 'VR apps daily tracking',
-    siteUrl: 'https://vradar.netlify.app',
-    author: 'jaxx2104',
-    twitter: 'jaxx2104',
+    siteUrl: 'https://radar.wonderleap.co',
+    author: 'wonderleap',
+    twitter: 'wonderleap',
     adsense: '',
   },
   pathPrefix: '/',
@@ -75,7 +75,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: '',
+        trackingId: 'UA-146489948-3',
       },
     },
     {
