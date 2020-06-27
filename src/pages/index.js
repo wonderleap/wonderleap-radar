@@ -282,7 +282,7 @@ class Index extends Component {
               </Row>
               <Row>
                 <Col>
-                  <p>This table shows all SideQuest titles added today.</p>
+                  <p>This section shows all SideQuest titles added today.</p>
                 </Col>
               </Row>
               <NewTable columns={['Rank', '', '']} data={addedToday} />
