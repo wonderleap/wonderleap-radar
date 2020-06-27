@@ -1,8 +1,8 @@
 {
-  "name": "gatsby-starter-bootstrap",
-  "description": "Simple starter for Gatsby",
-  "version": "2.0.1",
-  "author": "Futoshi Iwashita <jaxx2104@gmail.com>",
+  "name": "wonderleap-radar",
+  "description": "App tracker that ranks all of the apps on SideQuest",
+  "version": "0.1.4",
+  "author": "Luís Freitas <luis@wonderleap.co>",
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
@@ -88,7 +88,8 @@
     "lint": "eslint --ext .js,.jsx --ignore-pattern public .",
     "lint:text": "textlint src/pages/**/index.md",
     "lint:textfix": "textlint --fix src/pages/**/index.md",
-    "test": "prettier --write \"**/*.+(js|jsx|json|css|scss)\""
+    "test": "prettier --write \"**/*.+(js|jsx|json|css|scss)\"",
+    "prod": "gatsby build && gatsby serve"
   },
   "husky": {
     "hooks": {

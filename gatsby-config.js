@@ -1,10 +1,10 @@
 module.exports = {
   siteMetadata: {
     title: 'Radar',
-    description: 'VR apps daily tracking',
+    description: 'App tracker that ranks all of the apps on SideQuest',
     siteUrl: 'https://radar.wonderleap.co',
     author: 'wonderleap',
-    twitter: 'wonderleap',
+    twitter: 'wonderleaphq',
     adsense: '',
   },
   pathPrefix: '/',
@@ -50,26 +50,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'Gatstrap',
-        short_name: 'Gatstrap',
-        description: 'Gatsby starter for bootstrap a blog',
-        homepage_url: 'https://gatstrap.netlify.com',
+        name: 'Radar',
+        short_name: 'Radar',
+        description: 'App tracker that ranks all of the apps on SideQuest',
+        homepage_url: 'https://radar.wonderleap.co',
         start_url: '/',
         background_color: '#fff',
         theme_color: '#ff5722',
         display: 'standalone',
-        icons: [
-          {
-            src: '/img/android-chrome-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/img/android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
       },
     },
     {

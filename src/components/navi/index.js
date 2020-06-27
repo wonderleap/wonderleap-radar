@@ -5,8 +5,10 @@ import { Link } from 'gatsby'
 class Navi extends React.Component {
   render() {
     return (
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">Radar</Navbar.Brand>
+      <Navbar bg="light" expand="sm">
+        <Navbar.Brand href="/" style={{ color: '#f44336', fontWeight: 700 }}>
+          Radar
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav>
