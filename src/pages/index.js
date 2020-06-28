@@ -116,10 +116,6 @@ class Index extends Component {
 
     const isBottom = window.innerHeight + window.scrollY >= bottom
 
-    console.log(window.innerHeight + window.scrollY)
-    console.log(bottom)
-    console.log(isBottom)
-
     if (isBottom) {
       if (data.length) this.setState({ recordsPerPage: recordsPerPage + 50 })
     }

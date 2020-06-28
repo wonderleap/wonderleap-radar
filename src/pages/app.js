@@ -70,8 +70,6 @@ class App extends React.Component {
       })
     }
 
-    console.log(updatedDataset)
-
     this.setState({
       dailyViews: updatedDataset,
     })
@@ -92,8 +90,6 @@ class App extends React.Component {
         created_at: dataset[index].created_at,
       })
     }
-
-    console.log(updatedDataset)
 
     this.setState({
       dailyDownloads: updatedDataset,

@@ -31,7 +31,6 @@ function Table(props) {
         {data &&
           data.map((elm, index) => {
             if (elm.records.length === 0) {
-              console.log(elm.sq_id, 'has no records')
               return
             }
 
