@@ -1,4 +1,4 @@
-const format = (num, digits) => {
+export const format = (num, digits) => {
   var si = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'k' },
@@ -18,4 +18,26 @@ const format = (num, digits) => {
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
 
-export default format
+export const cardinalToOrdinal = n => {
+  let res = ''
+  if (n === 0) return (res = String(n))
+
+  switch (n % 10) {
+    case 1:
+      if (n === 11) return (res = `${n}th`)
+      res = `${n}st`
+      break
+    case 2:
+      if (n === 12) return (res = `${n}th`)
+      res = `${n}nd`
+      break
+    case 3:
+      if (n === 13) return (res = `${n}th`)
+      res = `${n}rd`
+      break
+    default:
+      res = `${n}th`
+      break
+  }
+  return res
+}

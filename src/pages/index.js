@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import request from '../utils/graphql'
-import format from '../utils/numbers'
+import { format } from '../utils/numbers'
 
 import {
   Row,
@@ -277,15 +277,27 @@ class Index extends Component {
             >
               <Row>
                 <Col sm="auto">
-                  <h3>{'New apps added today'}</h3>
+                  <h3>{'New apps today'}</h3>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <p>This section shows all SideQuest titles added today.</p>
+                  <p style={{ fontSize: 12 }}>
+                    This section shows all SideQuest titles added today.
+                  </p>
                 </Col>
               </Row>
-              <NewTable columns={['Rank', '', '']} data={addedToday} />
+              {addedToday.length > 0 ? (
+                <NewTable data={addedToday} />
+              ) : (
+                <Row>
+                  <Col>
+                    <p style={{ fontWeight: 700 }}>
+                      No new apps added today yet.
+                    </p>
+                  </Col>
+                </Row>
+              )}
             </Container>
 
             <Container style={{ marginTop: 30 }}>
@@ -296,7 +308,7 @@ class Index extends Component {
               </Row>
               <Row>
                 <Col>
-                  <p>
+                  <p style={{ fontSize: 12 }}>
                     This table shows all SideQuest titles ranked by their{' '}
                     {'Total Downloads'.toLowerCase()}.
                   </p>

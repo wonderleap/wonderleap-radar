@@ -14,7 +14,7 @@ import format from '../../utils/numbers'
 import moment from 'moment'
 
 function NewTable(props) {
-  const { columns, data, title, startingIndex } = props
+  const { data } = props
 
   return (
     <Row style={{ marginBottom: 10 }}>

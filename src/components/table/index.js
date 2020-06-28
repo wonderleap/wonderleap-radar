@@ -7,17 +7,20 @@ import {
   Nav,
   Image,
   Badge,
+  Button,
 } from 'react-bootstrap'
 import { Link } from 'gatsby'
-import format from '../../utils/numbers'
+import { format, cardinalToOrdinal } from '../../utils/numbers'
 import moment from 'moment'
+
+import twitterIcon from '../../../static/img/icons8-twitter-24.png'
 
 function Table(props) {
   const { columns, data, title, startingIndex } = props
 
   return (
     <TableBS responsive size="sm" hover>
-      <thead>
+      <thead className="text-center">
         <tr>
           {columns.map(col => (
             <th>{col}</th>
@@ -35,6 +38,23 @@ function Table(props) {
             const isNew =
               moment().format('YYYY-MM-DD') ===
               moment(elm.created_at).format('YYYY-MM-DD')
+
+            const totalDownloads = format(
+              (elm.records[elm.records.length - 1] &&
+                elm.records[elm.records.length - 1].downloads) ||
+                (elm.records[elm.records.length - 2] &&
+                  elm.records[elm.records.length - 2].downloads) ||
+                0,
+              2
+            )
+
+            const dailyDownloads =
+              elm.records.length > 0
+                ? !elm.records[elm.records.length - 2]
+                  ? elm.records[elm.records.length - 1].downloads
+                  : elm.records[elm.records.length - 1].downloads -
+                    elm.records[elm.records.length - 2].downloads
+                : 0
 
             return (
               <tr key={elm.sq_id}>
@@ -69,7 +89,7 @@ function Table(props) {
                     </p>
                   </a>
                 </td>
-                <td>
+                <td style={{ fontWeight: 700 }} className="text-center">
                   {format(
                     (elm.records[elm.records.length - 1] &&
                       elm.records[elm.records.length - 1].downloads) ||
@@ -78,7 +98,11 @@ function Table(props) {
                       0,
                     2
                   )}{' '}
-                  <small className="text-muted">
+                  <br />
+                  <small
+                    className="text-muted"
+                    style={{ fontWeight: 700, fontSize: 10 }}
+                  >
                     {' '}
                     +
                     {elm.records.length > 0
@@ -90,7 +114,7 @@ function Table(props) {
                     today
                   </small>
                 </td>
-                <td>
+                <td style={{ fontWeight: 700 }} className="text-center">
                   {format(
                     (elm.records[elm.records.length - 2] &&
                       elm.records[elm.records.length - 2].views) ||
@@ -99,7 +123,11 @@ function Table(props) {
                       0,
                     2
                   )}{' '}
-                  <small className="text-muted">
+                  <br />
+                  <small
+                    className="text-muted"
+                    style={{ fontWeight: 700, fontSize: 10 }}
+                  >
                     {' '}
                     +
                     {elm.records.length > 0
@@ -123,6 +151,25 @@ function Table(props) {
                     <td style={{ width: 10 }}>
                       {elm.is_webxr ? 'WebXR' : 'Native'}
                     </td>
+
+                <td>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      window.open(
+                        `https://twitter.com/intent/tweet?text=${encodeURI(
+                          `${elm.name} on ${cardinalToOrdinal(
+                            index + 1
+                          )} place @SideQuestVR. Reached ${totalDownloads} downloads (+${dailyDownloads} today). Check it out on:`
+                        )}&url=https://radar.wonderleap.co`,
+                        '_blank'
+                      )
+                    }
+                    variant="link"
+                  >
+                    <img src={twitterIcon} style={{ width: 15 }} />
+                  </Button>
+                </td>
                   */}
               </tr>
             )
