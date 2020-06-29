@@ -15,6 +15,8 @@ import {
   CardDeck,
   Pagination,
   Badge,
+  Form,
+  FormControl,
 } from 'react-bootstrap'
 import Layout from 'components/layout'
 import Table from 'components/table'
@@ -66,6 +68,7 @@ class Index extends Component {
       currentPage: 1,
       data: [],
       recordsPerPage: 50,
+      search: '',
     }
   }
 
@@ -112,7 +115,7 @@ class Index extends Component {
         document.documentElement.clientHeight,
         document.documentElement.scrollHeight,
         document.documentElement.offsetHeight
-      ) - 5
+      ) - 100
 
     const isBottom = window.innerHeight + window.scrollY >= bottom
 
@@ -198,6 +201,7 @@ class Index extends Component {
       totalViews,
       currentPage,
       recordsPerPage,
+      search,
     } = this.state
 
     return (
@@ -300,18 +304,31 @@ class Index extends Component {
               <Row>
                 <Col sm="auto">
                   <h3>{'SideQuest App Ranking'}</h3>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
                   <p style={{ fontSize: 12 }}>
                     This table shows all SideQuest titles ranked by their{' '}
                     {'Total Downloads'.toLowerCase()}.
                   </p>
+                  <Form
+                    style={{ marginBottom: 10 }}
+                    onSubmit={event => event.preventDefault()}
+                  >
+                    <FormControl
+                      type="text"
+                      placeholder="Filter by App Name"
+                      onChange={event => {
+                        event.preventDefault()
+
+                        this.setState({
+                          recordsPerPage: 50,
+                          search: event.target.value,
+                        })
+                      }}
+                    />
+                  </Form>
                 </Col>
               </Row>
               <Table
-                columns={['Rank', '', '', 'Downloads', ' Views']}
+                columns={['Rank', '', '', 'Downloads', ' Views', '']}
                 data={
                   data.slice(
                     recordsPerPage * (currentPage - 1),
@@ -320,6 +337,7 @@ class Index extends Component {
                 }
                 title={'Table name'}
                 startingIndex={recordsPerPage * (currentPage - 1)}
+                search={search.toLocaleLowerCase()}
               />
             </Container>
 
