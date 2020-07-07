@@ -29,8 +29,8 @@ const badges = {
 }
 
 const getBadge = ({ dailyDownloads, dailyViews }) => {
-  if (dailyDownloads > 100) return badges.hot
-  if (dailyViews > 100) return badges.exposure
+  if (dailyDownloads >= 100) return badges.hot
+  if (dailyViews >= 100) return badges.exposure
 }
 
 function Table(props) {

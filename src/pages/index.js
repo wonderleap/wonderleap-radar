@@ -42,7 +42,7 @@ const getData = `query getData($date1: timestamptz, $date2: timestamptz) {
 }
   `
 
-const getCreatedToday = `query getCreatedToday($date : timestamptz) {
+const getCreatedWeek = `query getCreatedWeek($date : timestamptz) {
   sidequest_apps(where: {created_at: {_gte: $date}}) {
     name
     sq_id
@@ -60,7 +60,7 @@ class Index extends Component {
     super(props)
     this.state = {
       loading: true,
-      addedToday: [],
+      addedWeek: [],
       totalDownloads: 0,
       totalViews: 0,
       dailyDownloads: [],
@@ -138,10 +138,14 @@ class Index extends Component {
     }
 
     request({
-      query: getCreatedToday,
-      variables: { date: moment().format('YYYY-MM-DD') },
+      query: getCreatedWeek,
+      variables: {
+        date: moment()
+          .startOf('week')
+          .format('YYYY-MM-DD'),
+      },
     }).then(data => {
-      this.setState({ addedToday: data.data.sidequest_apps })
+      this.setState({ addedWeek: data.data.sidequest_apps })
     })
 
     if (
@@ -196,7 +200,7 @@ class Index extends Component {
     const {
       data,
       loading,
-      addedToday,
+      addedWeek,
       totalDownloads,
       totalViews,
       currentPage,
@@ -243,10 +247,10 @@ class Index extends Component {
                 <Card style={{ width: '18rem' }}>
                   <Card.Body className="text-center">
                     <Card.Title as="h6" style={{ color: '#f44336' }}>
-                      New apps added today
+                      Apps added this week
                     </Card.Title>
                     <Card.Text>
-                      <h1>{addedToday.length || 0}</h1>
+                      <h1>{addedWeek.length || 0}</h1>
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -277,23 +281,23 @@ class Index extends Component {
             >
               <Row>
                 <Col sm="auto">
-                  <h3>{'New apps today'}</h3>
+                  <h3>Apps added this week</h3>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <p style={{ fontSize: 12 }}>
-                    This section shows all SideQuest titles added today.
+                    This section shows all SideQuest titles added this week.
                   </p>
                 </Col>
               </Row>
-              {addedToday.length > 0 ? (
-                <NewTable data={addedToday} />
+              {addedWeek.length > 0 ? (
+                <NewTable data={addedWeek} />
               ) : (
                 <Row>
                   <Col>
                     <p style={{ fontWeight: 700 }}>
-                      No new apps added today yet.
+                      No new apps added this week yet.
                     </p>
                   </Col>
                 </Row>
