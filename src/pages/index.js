@@ -140,9 +140,7 @@ class Index extends Component {
     request({
       query: getCreatedWeek,
       variables: {
-        date: moment()
-          .startOf('week')
-          .format('YYYY-MM-DD'),
+        date: moment(Date.now() - 7 * 24 * 3600 * 1000).format('YYYY-MM-DD'),
       },
     }).then(data => {
       this.setState({ addedWeek: data.data.sidequest_apps })
